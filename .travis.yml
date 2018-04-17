@@ -1,20 +1,30 @@
+
 language: cpp
 
-os: osx
-osx_image: xcode8
-compiler:
-  - clang
+os:
+    - osx
+    - linux
 
-before_install:
-  - ./ci/install_deps_osx.sh
+matrix:
+    include:
+        - os: osx
+          osx_image: xcode8
+          compiler:
+              - clang
 
-cache:
-  directories:
-    - $HOME/Library/Caches/Homebrew
+          before_install:
+              - ./ci/install_deps_osx.sh
 
-stages:
-  - c++format
-  - build
+          cache:
+              directories:
+                  - $HOME/Library/Caches/Homebrew
+
+        - os: linux
+          dist: xenial
+          before_install:
+              - sudo apt-get -qq update
+              - sudo apt-get install -y cmake libsdl2-dev libsdl2-ttf-dev liblua5.2-dev libboost-system-dev libboost-filesystem-dev
+
 
 jobs:
   include:
